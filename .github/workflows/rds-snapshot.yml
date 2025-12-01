@@ -58,8 +58,6 @@ jobs:
             --query 'DBInstances[0].VpcSecurityGroups[0].VpcSecurityGroupId' --output text)
           PG=$(aws rds describe-db-instances --db-instance-identifier "$SRC" \
             --query 'DBInstances[0].DBParameterGroups[0].DBParameterGroupName' --output text)
-          KMS=$(aws rds describe-db-instances --db-instance-identifier "$SRC" \
-            --query 'DBInstances[0].KmsKeyId' --output text)
 
           aws rds restore-db-instance-from-db-snapshot \
             --db-instance-identifier "$TEMP_ID" \
@@ -67,7 +65,6 @@ jobs:
             --db-subnet-group-name "$SUBNET_GRP" \
             --vpc-security-group-ids "$VPC_SG" \
             --db-parameter-group-name "$PG" \
-            $( [ "$KMS" != "None" ] && echo --kms-key-id "$KMS" ) \
             --no-publicly-accessible \
             --copy-tags-to-snapshot \
             | tee "${EVID_DIR}/$(date +%Y%m%d_%H%M%S)_rds_restore_start.json"

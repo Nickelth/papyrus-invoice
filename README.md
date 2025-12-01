@@ -58,6 +58,8 @@ docker compose --env-file .env.dev build --no-cache --progress=plain
 
 Terraformで起動
 
+起動コマンドは以下の「運用フロー 1. plan / apply の実行と証跡化」を参照。
+
 [10-rds/README](infra/10-rds/README.md)
 
 ### 20. ALB スモーク
