@@ -1,3 +1,104 @@
+## 2025-12-01
+
+### 目的
+
+* RDS 手動スナップショット作成～リストア～削除までを GitHub Actions から自動実行できるようにする
+* 実行ごとに RTO・接続情報・適用パラメータなどの証跡を `docs/evidence` に自動保存する仕組みを整える
+* 証跡用ブランチ＋PR作成までを CI で完結させ、DR 演習の再現性とレビュー性を高める
+
+### 変更内容
+
+* GitHub Actions 用 IAM ロール（`ECRPowerUser`）に RDS 操作用権限を追加
+
+  * 追加した主なアクション
+
+    * `rds:CreateDBSnapshot` / `rds:DescribeDBSnapshots`
+    * `rds:RestoreDBInstanceFromDBSnapshot`
+    * `rds:DescribeDBInstances` / `rds:DeleteDBInstance`
+    * `rds:AddTagsToResource` / `rds:ListTagsForResource`
+  * 本番相当インスタンスは引き続き誤削除されないよう、Delete の範囲を一時インスタンス（`papyrus-pg16-dev-restore-*`）に限定するポリシーに整理
+
+* RDS スナップショット＆リストア演習用ワークフローを整備
+
+  * 対象インスタンス: `papyrus-pg16-dev`（`DB_INSTANCE_ID`）
+  * 実装した処理フロー
+
+    * `aws rds create-db-snapshot` による手動スナップショット作成
+    * `restore-db-instance-from-db-snapshot` による一時インスタンス `papyrus-pg16-dev-restore-<UTCタイムスタンプ>` の作成
+
+      * 不正なオプションだった `--kms-key-id` を削除し、スナップショット側の暗号化設定を継承する形に修正
+    * `wait db-instance-available` による復旧完了待ちと経過秒数（RTO）の計測
+    * エンドポイント・ポート番号・CA 証明書 ID・適用パラメータグループの取得
+    * 一時インスタンス削除（`--skip-final-snapshot`）
+  * 証跡 JSON を `docs/evidence` に出力するよう統一
+
+    * ファイル名は `YYYYMMDD_HHMMSS_種別.json` 形式に統一
+
+* 証跡 PR 自動作成の仕組みを追加
+
+  * `dev` ブランチから `evidence/rds-drill-YYYYMMDD-HHMMSS` ブランチを自動作成
+  * 証跡 JSON をコミットして push
+  * `gh pr create` により `dev` 向け PR を自動作成
+
+    * ラベル `evidence` / `automation` を付与
+  * 上記のために以下を実施
+
+    * リポジトリにラベル `evidence`, `automation` を事前作成
+    * `Settings > Actions > Workflow permissions` を
+
+      * `Read and write permissions`
+      * 「Actions による PR 作成を許可」
+        に変更し、`GITHUB_TOKEN` で PR 作成が可能なように調整
+
+### 証跡一覧
+
+今回の疎通確認実行（2025-12-01）で生成された代表的な証跡:
+
+* `docs/evidence/20251201_075653_rds_snapshot_start.json`
+
+  * 手動スナップショット作成リクエストのレスポンス
+* `docs/evidence/20251201_075929_rds_snapshot_facts.json`
+
+  * 作成されたスナップショットの詳細情報
+* `docs/evidence/20251201_075934_rds_restore_start.json`
+
+  * 一時インスタンス復元リクエストのレスポンス
+* `docs/evidence/20251201_080815_rds_pg_applied.json`
+
+  * 一時インスタンスに適用されたパラメータグループ情報
+* `docs/evidence/20251201_080815_rds_restore_facts.json`
+
+  * 一時インスタンスのエンドポイント・ポート・CA 証明書 ID・RTO 秒数
+* `docs/evidence/20251201_080816_rds_restore_delete.json`
+
+  * 一時インスタンス削除リクエストのレスポンス
+* GitHub PR
+
+  * タイトル: `evidence: RDS snapshot & restore drill 20251201-075140`
+  * ブランチ: `evidence/rds-drill-20251201-075140`
+  * ラベル: `evidence`, `automation`
+
+### ロールアウト / 影響
+
+* ロールアウト方法
+
+  * 手動トリガー専用ワークフロー（`workflow_dispatch`）として運用
+  * DR 演習を実施したいタイミングで、GitHub Actions 画面から対象ワークフローを実行する
+  * 実行後、自動作成された evidence PR をレビューし、内容を確認のうえ必要に応じて `dev` にマージする
+
+* 影響範囲
+
+  * 対象 RDS: `papyrus-pg16-dev` と、そのスナップショットから作成される一時インスタンスのみ
+  * 一時インスタンスは毎回 `--skip-final-snapshot` で削除されるため、長期リソース増加は発生しない
+  * IAM ロールに RDS 操作用の権限が追加されているが、Delete は本体インスタンスではなく DR 用一時インスタンスに限定しており、プロダクションデータ削除リスクは増加していない
+
+* 想定される運用上の注意点
+
+  * ワークフロー実行中は一時的に RDS インスタンスが増えるため、Account や Region のサービスクォータ（DB インスタンス数）に余裕があることを前提とする
+  * IAM ポリシー変更やインスタンス名変更を行った場合は、本ワークフローとポリシーの整合性確認が必要
+
+---
+
 ## 2025-11-04
 
 ### 目的
