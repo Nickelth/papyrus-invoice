@@ -1,0 +1,107 @@
+{
+    "DBInstance": {
+        "DBInstanceIdentifier": "papyrus-pg16-dev-restore-20251201-071311",
+        "DBInstanceClass": "db.t4g.micro",
+        "Engine": "postgres",
+        "DBInstanceStatus": "deleting",
+        "MasterUsername": "papyrus",
+        "DBName": "papyrus",
+        "Endpoint": {
+            "Address": "papyrus-pg16-dev-restore-20251201-071311.cpgeue8cgb54.us-west-2.rds.amazonaws.com",
+            "Port": 5432,
+            "HostedZoneId": "Z1PVIF0B656C1W"
+        },
+        "AllocatedStorage": 20,
+        "InstanceCreateTime": "2025-12-01T07:16:14.178000+00:00",
+        "PreferredBackupWindow": "11:17-11:47",
+        "BackupRetentionPeriod": 1,
+        "DBSecurityGroups": [],
+        "VpcSecurityGroups": [
+            {
+                "VpcSecurityGroupId": "sg-03afe280703d2b7b8",
+                "Status": "active"
+            }
+        ],
+        "DBParameterGroups": [
+            {
+                "DBParameterGroupName": "papyrus-pg16-min",
+                "ParameterApplyStatus": "in-sync"
+            }
+        ],
+        "AvailabilityZone": "us-west-2a",
+        "DBSubnetGroup": {
+            "DBSubnetGroupName": "papyrus-rds-subnet",
+            "DBSubnetGroupDescription": "Managed by Terraform",
+            "VpcId": "vpc-0fbda65c351254bb3",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetIdentifier": "subnet-0d521901e37cb965e",
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-west-2b"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetIdentifier": "subnet-08326af247b075d10",
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-west-2a"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ]
+        },
+        "PreferredMaintenanceWindow": "tue:09:00-tue:09:30",
+        "PendingModifiedValues": {},
+        "LatestRestorableTime": "2025-12-01T07:20:28+00:00",
+        "MultiAZ": false,
+        "EngineVersion": "16.10",
+        "AutoMinorVersionUpgrade": true,
+        "ReadReplicaDBInstanceIdentifiers": [],
+        "LicenseModel": "postgresql-license",
+        "StorageThroughput": 0,
+        "OptionGroupMemberships": [
+            {
+                "OptionGroupName": "default:postgres-16",
+                "Status": "in-sync"
+            }
+        ],
+        "PubliclyAccessible": false,
+        "StorageType": "gp2",
+        "DbInstancePort": 0,
+        "StorageEncrypted": true,
+        "KmsKeyId": "arn:aws:kms:us-west-2:438336773404:key/a2851923-61ad-4f14-b175-70dd9782124d",
+        "DbiResourceId": "db-2CAQV37FHYXFM2P7FEI4RFYTTQ",
+        "CACertificateIdentifier": "",
+        "DomainMemberships": [],
+        "CopyTagsToSnapshot": true,
+        "MonitoringInterval": 0,
+        "DBInstanceArn": "arn:aws:rds:us-west-2:438336773404:db:papyrus-pg16-dev-restore-20251201-071311",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "DatabaseInsightsMode": "standard",
+        "PerformanceInsightsEnabled": false,
+        "DeletionProtection": false,
+        "AssociatedRoles": [],
+        "TagList": [
+            {
+                "Key": "Env",
+                "Value": "dev"
+            },
+            {
+                "Key": "Project",
+                "Value": "papyrus"
+            },
+            {
+                "Key": "Owner",
+                "Value": "self"
+            }
+        ],
+        "CustomerOwnedIpEnabled": false,
+        "NetworkType": "IPV4",
+        "BackupTarget": "region",
+        "DedicatedLogVolume": false,
+        "EngineLifecycleSupport": "open-source-rds-extended-support"
+    }
+}
