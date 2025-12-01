@@ -1,0 +1,7 @@
+{
+  "temp_instance": "papyrus-pg16-dev-restore-20251201-075930",
+  "endpoint": "****.****.us-west-2.rds.amazonaws.com",
+  "port": 5432,
+  "restore_seconds": 514,
+  "ca": "rds-ca-rsa2048-g1"
+}
