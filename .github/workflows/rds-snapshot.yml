@@ -126,4 +126,5 @@ jobs:
           gh pr create --base dev --head "$BR" \
             --title "evidence: RDS snapshot & restore drill ${TS}" \
             --body "Created manual snapshot, restored temporary instance, captured facts (RTO/endpoint/CA/PG), and deleted temp DB." \
-            --label "evidence,automation"
+            --label evidence \
+            --label automation
