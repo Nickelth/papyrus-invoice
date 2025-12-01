@@ -1,0 +1,30 @@
+{
+    "DBSnapshot": {
+        "DBSnapshotIdentifier": "papyrus-pg16-dev-manual-20251201-073820",
+        "DBInstanceIdentifier": "papyrus-pg16-dev",
+        "Engine": "postgres",
+        "AllocatedStorage": 20,
+        "Status": "creating",
+        "Port": 5432,
+        "AvailabilityZone": "us-west-2b",
+        "VpcId": "vpc-0fbda65c351254bb3",
+        "InstanceCreateTime": "2025-12-01T05:56:14.387000+00:00",
+        "MasterUsername": "papyrus",
+        "EngineVersion": "16.10",
+        "LicenseModel": "postgresql-license",
+        "SnapshotType": "manual",
+        "StorageThroughput": 0,
+        "OptionGroupName": "default:postgres-16",
+        "PercentProgress": 0,
+        "StorageType": "gp2",
+        "Encrypted": true,
+        "KmsKeyId": "arn:aws:kms:us-west-2:438336773404:key/a2851923-61ad-4f14-b175-70dd9782124d",
+        "DBSnapshotArn": "arn:aws:rds:us-west-2:438336773404:snapshot:papyrus-pg16-dev-manual-20251201-073820",
+        "IAMDatabaseAuthenticationEnabled": false,
+        "ProcessorFeatures": [],
+        "DbiResourceId": "db-WUNXCFMRHOFOSX5IO6PBYEBJFU",
+        "TagList": [],
+        "SnapshotTarget": "region",
+        "DedicatedLogVolume": false
+    }
+}
